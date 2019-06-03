@@ -1,162 +1,167 @@
 const Express = require('express');
-const bodyParser = require('body-parser');
-const knex = require('knex');
 const cors = require('cors');
+const bodyParser = require('body-parser');
+// connection factory
+const knex = require('knex');
+
+const dbConfig = require('./knexfile');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
-const config = require('./knexfile');
-//connection factory
-const dbClient = knex(config);
-
+// create an express instance
 const express = new Express();
+
+express.use(cors());
 express.use(bodyParser.json());
 
+// ** this is is client connection
+const dbClient = knex(dbConfig);
 
 
-function authenticate(request, response) {
-
+function sendHealthStatus(req, resp) {
+  resp.json({
+    status: 'ok'
+  })
   
-    const username = request.body.username;
-    const passwordFromJSON = request.body.password;
-    
-  
-    dbClient
-      .table('users')
-      .first('password')
-      .where('username', username)
-      .then(data => {
-        if (!data) {
-          response.json({
-            status: 'fail',
-            message: 'User not found.'
-          })
-        } else {
-          const password = data.password;
-          const isMatch = bcrypt.compareSync(passwordFromJSON, password);
-          if (isMatch) {
-            // password matched
-            response.json({
-              status: 'success',
-              accessToken: jwt.sign({
-                username: username
-              }, 'secret_key')
-            })
-          } else {
-            response.json({
-              status: 'fail',
-              message: 'user not authenticated'
-            })
-          }
-        }
-        
-      })
-      .catch(error => {
-        response.json({
-          status: 'fail',
-        })
-      })
-  }
-function createContactHandler(req,res){
-    dbClient('users')
-    .insert({
-       
-        username :req.body.username,
-        password :req.body.password
-    })
-    .then(val => {
-        res.json({
-            status :'success'
-        })
-
-    })
-    .catch(error =>{
-        res.json({
-            status:"failed"
-        })
-    })
-    
-   
 }
 
-function getContacts(req,res){
-    dbClient.select("*")
-    .table('users')
-    .then(data=>{
-       res.json({
-         status:'ok',
-         data:data,
-          error:false
-       })
-    })
-    
-    .catch(error=>{
-        console.log(error);
-        res.json({
-            status:'failed'
-        })
-    })
- }
- 
+function getVersion(req, res) {
+  // send me a version
+  res.json({version: '0.0.0'});           
+}
 function registerUser(request, response) {
-    const username = request.body.username;
-    const password = request.body.password;
-    // const imageFile = request.body.imageFile;
-  
-    const hashedPassword = bcrypt.hashSync(password, 10);
-    dbClient
-      .table('users')
-      .insert({
-        username: username,
-        password: hashedPassword
-        // imageFile: imageFile
-      })
-      .then(data => {
-        response.json({
-          status: 'success',
-          data: {
-            username: username,
-          }
-        })
-      })
-      .catch(error => {
-        response.json({
-          status: 'fail',
-          data:'error'
-        })
-      })
-  }
-  function insertImage(req,res){
-    const imageFile = req.body.imageFile;
+  const fname = request.body.fname;
+  const lname = request.body.lname;
+  const username = request.body.username;
+  const Password = request.body.password;
 
-    
-    dbClient
-      .table('imagefile')
-      .insert({
+  const password = bcrypt.hashSync(Password, 10);
+  dbClient
+    .table('users')
+    .insert({fname,lname,username,password})
+    .then(data => {
+      response.json({
         
-        imageFile: imageFile
+        status: 'success',
+        message : 'registration successful',
+        
+      })  
+    })
+    .catch(error => {
+      
+      response.json({
+        status: 'fail',
       })
-      .then(data => {
-        response.json({
-          status: 'success',
-          data: {
-           imageFile : imageFile,
-           destination: "./public/uploads",
-          }
-        })
-      })
-      .catch(error => {
+    })
+}
+
+// create a auth handler
+function authenticate(request, response) {
+  
+  const username = request.body.username;
+  const passwordFromJSON = request.body.password;
+
+  dbClient
+    .table('users')
+    .first('password')
+    .where('username', username)
+    .then(data => {
+      if (!data) {
         response.json({
           status: 'fail',
+          message: 'User not found.'
         })
+      } else {
+        const password = data.password;
+        const isMatch = bcrypt.compareSync(passwordFromJSON, password);
+        if (isMatch) {
+          // password matched
+          response.json({
+            status: 'success',
+            accessToken: jwt.sign({
+              username: username
+            }, 'secret_key')
+          })
+        } else {
+          response.json({
+            status: 'fail',
+            message: 'user not authenticated'
+          })
+        }
+      }
+      
+    })
+    .catch(error => {
+      response.json({
+        status: 'fail',
       })
-  }
-  express.post('/api/register', registerUser);
- express.post('/api/auth', authenticate);
-express.post('/api/contacts', createContactHandler);
-express.get('/api/contacts', getContacts);
-express.post('/api/image',insertImage);
+    })
+}
 
-express.listen(8000,'localhost',function(){
-    console.log('server is running on port 8000')
+async function getUsers(request, response) {
+  try{
+  const data = await dbClient.table('users').select('username','password')
+        response.json({
+        status: 'success',
+        data: data
+     
+    })
+  } catch(error){
+    
+    response.json({
+      status: 'failed',
+      message : error
+   
+  })
+
+  }
+}
+
+async function getUsername(request,response){
+  
+  try{
+    const user = request.params.username;
+    
+    const data = await dbClient.table('users').select('username','password').where("username",user);
+    if(data==null){
+      response.json({
+        status: 'failed',
+        data: data,
+      message : "No user found"
+     
+    })
+    }else{
+    response.json({
+      status: 'success',
+      data: data
+   
+  })}
+} catch(error){
+  console.log(error)
+  
+  response.json({
+
+    status: 'failed22',
+    message : error
+ 
 })
+
+}
+
+  }
+  
+
+
+express.get('/api/health', sendHealthStatus)
+express.get('/api/version', getVersion)
+express.post('/api/auth', authenticate); // 1
+express.post('/api/register', registerUser);
+express.get('/api/users', getUsers)
+express.get('/api/users/:username',getUsername);
+
+express.listen(8000, 'localhost', () => {
+  console.log("Server is running at ", 8000)
+})
+
+
+// migration in knex
+
