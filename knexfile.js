@@ -4,7 +4,7 @@ module.exports = {
     connection: {
         host: "localhost",
         user: "root",
-        database: "contacts",
+        database: "musicalplaza",
         password: ""
     },
     version: "5.2",
