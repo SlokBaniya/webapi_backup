@@ -1,3 +1,5 @@
+const knex = require('knex');
+const dbConfig = require('./../knexfile');
 const dbClient = knex(dbConfig);
 // const knex = require('knex');
 // const dbConfig = require('./../knexfile');
@@ -21,48 +23,43 @@ async function register(username,hashedPassword) {
     }
   
   
-//   // create a auth handler
-//   function authenticate(request, response) {
+  // create a auth handler
+  async function authenticate(request, response) {
+    try{
     
-//     const username = request.body.username;
-//     const passwordFromJSON = request.body.password;
+    // const username = request.body.username;
+    // const passwordFromJSON = request.body.password;
   
-//     dbClient
-//       .table('users')
-//       .first('password')
-//       .where('username', username)
-//       .then(data => {
-//         if (!data) {
-//           response.json({
-//             status: 'fail',
-//             message: 'User not found.'
-//           })
-//         } else {
-//           const password = data.password;
-//           const isMatch = bcrypt.compareSync(passwordFromJSON, password);
-//           if (isMatch) {
-//             // password matched
-//             response.json({
-//               status: 'success',
-//               accessToken: jwt.sign({
-//                 username: username
-//               }, 'secret_key')
-//             })
-//           } else {
-//             response.json({
-//               status: 'fail',
-//               message: 'user not authenticated'
-//             })
-//           }
-//         }
+  await dbClient.table('users').first('password').where('username', username)
+      // .then(data => {
+      //   if (!data) {
+      //     response.json({
+      //       status: 'fail',
+      //       message: 'User not found.'
+      //     })
+      //   } else {
+      //     const password = data.password;
+      //     const isMatch = bcrypt.compareSync(passwordFromJSON, password);
+      //     if (isMatch) {
+      //       // password matched
+      //       response.json({
+      //         status: 'success',
+      //         accessToken: jwt.sign({
+      //           username: username
+      //         }, 'secret_key')
+      //       })
+      //     } else {
+      //       response.json({
+      //         status: 'fail',
+      //         message: 'user not authenticated'
+      //       })
+      //     }
+      //   }
         
-//       })
-//       .catch(error => {
-//         response.json({
-//           status: 'fail',
-//         })
-//       })
-//   }
+      // })
+     }catch(error){
+       console.log(error)
+  }}
   
 //   async function getUsers(request, response) {
 //     try{
@@ -116,5 +113,5 @@ async function register(username,hashedPassword) {
   
 //     }
     module.exports = {
-        register: register
+        register
       }
