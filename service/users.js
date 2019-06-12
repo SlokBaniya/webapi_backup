@@ -5,7 +5,7 @@ const dbClient = knex(dbConfig);
 // const dbConfig = require('./../knexfile');
 
 
-async function register(username,hashedPassword) {
+async function register(fullname,username,hashedPassword,address,contact,gender) {
     try{
     // // get username
     // const username = request.body.username;
@@ -13,7 +13,7 @@ async function register(username,hashedPassword) {
     // const password = request.body.password;
   
     // const hashedPassword = bcrypt.hashSync(password, 10);
-    await dbClient.table('users').insert({username: username, password: hashedPassword
+    await dbClient.table('users').insert({fullname: fullname,username: username,password: hashedPassword,address : address,contact: contact,gender: gender
       })
     }
       catch(error){
