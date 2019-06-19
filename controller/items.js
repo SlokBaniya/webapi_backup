@@ -13,12 +13,12 @@ express.use(cors());
 express.use(bodyParser.json());
 
 // ** this is is client connection
-const userService = require('../service/users');
+const itemsService = require('../service/items');
 
 
 
 
-async function register(request, response){
+async function add(request, response){
       try {
     const username = request.body.username;
     const password = request.body.password;
@@ -34,22 +34,9 @@ async function register(request, response){
     })
   }
 }
-async function authentication(request, response){
-  try{
-    const username = request.body.username;
-    const password = request.body.password;
-    const hashedPassword = bcrypt.hashSync(password, 10);
 
-    await userService.authentication(username,password);  
-
-
-  }catch(error){
-      console.log(error)
-
-  }
-}
 
 
 module.exports = {
-  register
+  add
   }
