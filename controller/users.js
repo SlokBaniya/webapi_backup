@@ -20,11 +20,18 @@ const userService = require('../service/users');
 
 async function register(request, response){
       try {
+    
+    const fullname = request.body.fullname;
     const username = request.body.username;
     const password = request.body.password;
+    const address = request.body.address;
+    const contact = request.body.contact;
+    const gender = request.body.gender;
+    
+
     const hashedPassword = bcrypt.hashSync(password, 10); 
 
-      await userService.register(username,hashedPassword);  
+      await userService.register(fullname,username,hashedPassword,address,contact,gender);  
       response.json({
         status: 'success'        
       })
