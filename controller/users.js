@@ -15,19 +15,14 @@ express.use(bodyParser.json());
 // ** this is is client connection
 const userService = require('../service/users');
 
-
-
-
 async function register(request, response){
-      try {
-    
+      try {    
     const fullname = request.body.fullname;
     const username = request.body.username;
     const password = request.body.password;
     const address = request.body.address;
     const contact = request.body.contact;
-    const gender = request.body.gender;
-    
+    const gender = request.body.gender;    
 
     const hashedPassword = bcrypt.hashSync(password, 10); 
 
