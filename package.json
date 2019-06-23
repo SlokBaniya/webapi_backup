@@ -5,10 +5,6 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-<<<<<<< HEAD
-=======
-    "start": "node index.js",
->>>>>>> 0833f4a03ec4a0dd7b9e4e5bd3a04c1734ad66c4
     "migrate:make": "knex migrate:make --knexfile ./knexfile.js ",
     "migrate:run": "knex migrate:latest --knexfile ./knexfile.js"
   },
@@ -20,28 +16,11 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-<<<<<<< HEAD
     "knex": "^0.16.5",
     "mysql": "^2.17.1",
     "pg": "^7.11.0",
     "sqlite3": "^4.0.8"
   },
   "devDependencies": {},
-=======
-    "knex": "^0.17.0",
-    "multer": "^1.4.1",
-    "mysql": "^2.17.1",
-    "package.json": "^2.0.1"
-  },
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SlokBaniya/emp_mgmt_web_server.git"
-  },
-  "bugs": {
-    "url": "https://github.com/SlokBaniya/emp_mgmt_web_server/issues"
-  },
-  "homepage": "https://github.com/SlokBaniya/emp_mgmt_web_server#readme",
->>>>>>> 0833f4a03ec4a0dd7b9e4e5bd3a04c1734ad66c4
   "description": ""
 }
