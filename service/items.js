@@ -5,11 +5,7 @@ const dbClient = knex(dbConfig);
 // const dbConfig = require('./../knexfile');
 
 
-<<<<<<< HEAD
-async function register(data) {
-=======
-async function register(fullname,username,hashedPassword,address,contact,gender) {
->>>>>>> 0833f4a03ec4a0dd7b9e4e5bd3a04c1734ad66c4
+async function register(username,hashedPassword) {
     try{
     // // get username
     // const username = request.body.username;
@@ -17,21 +13,8 @@ async function register(fullname,username,hashedPassword,address,contact,gender)
     // const password = request.body.password;
   
     // const hashedPassword = bcrypt.hashSync(password, 10);
-<<<<<<< HEAD
-    const fullname = data.fullname;
-    const address = data.address;
-    const contact = data.contact;
-    const password = data.hashedPassword;
-    const username = data.username;
-    const gender = data.gender;
-   
-   
-
-    await dbClient.table('users').insert({fullname: fullname, username: username, password: password, address: address, contact: contact, gender: gender})
-=======
-    await dbClient.table('users').insert({fullname: fullname,username: username,password: hashedPassword,address : address,contact: contact,gender: gender
+    await dbClient.table('users').insert({username: username, password: hashedPassword
       })
->>>>>>> 0833f4a03ec4a0dd7b9e4e5bd3a04c1734ad66c4
     }
       catch(error){
           console.log(error)
@@ -41,44 +24,6 @@ async function register(fullname,username,hashedPassword,address,contact,gender)
   
   
   // create a auth handler
-<<<<<<< HEAD
-  // async function authenticate(request, response) {
-  //   try{
-    
-  //   // const username = request.body.username;
-  //   // const passwordFromJSON = request.body.password;
-  
-  // await dbClient.table('users').first('password').where('username', username)
-  //     // .then(data => {
-  //     //   if (!data) {
-  //     //     response.json({
-  //     //       status: 'fail',
-  //     //       message: 'User not found.'
-  //     //     })
-  //     //   } else {
-  //     //     const password = data.password;
-  //     //     const isMatch = bcrypt.compareSync(passwordFromJSON, password);
-  //     //     if (isMatch) {
-  //     //       // password matched
-  //     //       response.json({
-  //     //         status: 'success',
-  //     //         accessToken: jwt.sign({
-  //     //           username: username
-  //     //         }, 'secret_key')
-  //     //       })
-  //     //     } else {
-  //     //       response.json({
-  //     //         status: 'fail',
-  //     //         message: 'user not authenticated'
-  //     //       })
-  //     //     }
-  //     //   }
-        
-  //     // })
-  //    }catch(error){
-  //      console.log(error)
-  // }}
-=======
   async function authenticate(request, response) {
     try{
     
@@ -115,7 +60,6 @@ async function register(fullname,username,hashedPassword,address,contact,gender)
      }catch(error){
        console.log(error)
   }}
->>>>>>> 0833f4a03ec4a0dd7b9e4e5bd3a04c1734ad66c4
   
 //   async function getUsers(request, response) {
 //     try{

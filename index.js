@@ -1,10 +1,19 @@
 const Express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+// connection factory
 const knex = require('knex');
+<<<<<<< HEAD
 const dbConfig = require('./knexfile');
 const jwt = require('jsonwebtoken');
 
+=======
+
+const dbConfig = require('./knexfile');
+
+const jwt = require('jsonwebtoken');
+// create an express instance
+>>>>>>> 0833f4a03ec4a0dd7b9e4e5bd3a04c1734ad66c4
 const express = new Express();
 
 express.use(cors());
