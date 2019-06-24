@@ -32,42 +32,42 @@ async function register(data) {
   
   
   // create a auth handler
-  // async function authenticate(request, response) {
-  //   try{
+  async function authenticate(data) {
+    try{
     
-  //   // const username = request.body.username;
-  //   // const passwordFromJSON = request.body.password;
+      const password = data.hashedPassword;
+      const username = data.username;
   
-  // await dbClient.table('users').first('password').where('username', username)
-  //     // .then(data => {
-  //     //   if (!data) {
-  //     //     response.json({
-  //     //       status: 'fail',
-  //     //       message: 'User not found.'
-  //     //     })
-  //     //   } else {
-  //     //     const password = data.password;
-  //     //     const isMatch = bcrypt.compareSync(passwordFromJSON, password);
-  //     //     if (isMatch) {
-  //     //       // password matched
-  //     //       response.json({
-  //     //         status: 'success',
-  //     //         accessToken: jwt.sign({
-  //     //           username: username
-  //     //         }, 'secret_key')
-  //     //       })
-  //     //     } else {
-  //     //       response.json({
-  //     //         status: 'fail',
-  //     //         message: 'user not authenticated'
-  //     //       })
-  //     //     }
-  //     //   }
+  await dbClient.table('users').first('password').where('username', username && 'password', password)
+      // .then(data => {
+      //   if (!data) {
+      //     response.json({
+      //       status: 'fail',
+      //       message: 'User not found.'
+      //     })
+      //   } else {
+      //     const password = data.password;
+      //     const isMatch = bcrypt.compareSync(passwordFromJSON, password);
+      //     if (isMatch) {
+      //       // password matched
+      //       response.json({
+      //         status: 'success',
+      //         accessToken: jwt.sign({
+      //           username: username
+      //         }, 'secret_key')
+      //       })
+      //     } else {
+      //       response.json({
+      //         status: 'fail',
+      //         message: 'user not authenticated'
+      //       })
+      //     }
+      //   }
         
-  //     // })
-  //    }catch(error){
-  //      console.log(error)
-  // }}
+      // })
+     }catch(error){
+       console.log(error)
+  }}
   
 //   async function getUsers(request, response) {
 //     try{
@@ -121,5 +121,6 @@ async function register(data) {
   
 //     }
     module.exports = {
-        register
+        register,
+        authenticate
       }

@@ -28,11 +28,13 @@ const dbClient = knex(dbConfig);
 //   res.json({version: '0.0.0'});           
 // }
 
-const userController = require('./controller/users')
+const userController = require('./controller/users');
+
+
 
 // express.get('/api/health', sendHealthStatus)
 // express.get('/api/version', getVersion)
-// express.post('/api/auth', authenticate); // 1
+express.post('/api/login', userController.authentication); // 1
 express.post('/api/register', userController.register);
 
 // express.get('/api/users', getUsers)
