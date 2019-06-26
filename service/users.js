@@ -1,18 +1,12 @@
 const knex = require('knex');
 const dbConfig = require('./../knexfile');
 const dbClient = knex(dbConfig);
-// const knex = require('knex');
-// const dbConfig = require('./../knexfile');
+
 
 
 async function register(data) {
     try{
-    // // get username
-    // const username = request.body.username;
-    // // get password
-    // const password = request.body.password;
-  
-    // const hashedPassword = bcrypt.hashSync(password, 10);
+
     const fullname = data.fullname;
     const address = data.address;
     const contact = data.contact;
@@ -29,45 +23,14 @@ async function register(data) {
 
       }
     }
-  
-  
-  // create a auth handler
-  async function authenticate(data) {
-    try{
-    
-      const password = data.hashedPassword;
-      const username = data.username;
-  
-  await dbClient.table('users').first('password').where('username', username && 'password', password)
-      // .then(data => {
-      //   if (!data) {
-      //     response.json({
-      //       status: 'fail',
-      //       message: 'User not found.'
-      //     })
-      //   } else {
-      //     const password = data.password;
-      //     const isMatch = bcrypt.compareSync(passwordFromJSON, password);
-      //     if (isMatch) {
-      //       // password matched
-      //       response.json({
-      //         status: 'success',
-      //         accessToken: jwt.sign({
-      //           username: username
-      //         }, 'secret_key')
-      //       })
-      //     } else {
-      //       response.json({
-      //         status: 'fail',
-      //         message: 'user not authenticated'
-      //       })
-      //     }
-      //   }
-        
-      // })
-     }catch(error){
-       console.log(error)
-  }}
+
+    async function authenticate(username){
+      try{
+        return await dbClient.table('users').first('password').where('username',username);
+      }catch(error){
+        return error;
+      }
+    }
   
 //   async function getUsers(request, response) {
 //     try{

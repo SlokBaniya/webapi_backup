@@ -16,82 +16,78 @@ express.use(bodyParser.json());
 const userService = require('../service/users');
 
 
-
-
-async function register(request, response){
-      try {
+async function register(request, response) {
+  try {
     const fullname = request.body.fullname;
-    const address = request.body.address; 
-    const contact = request.body.contact; 
-    const gender = request.body.gender; 
+    const address = request.body.address;
+    const contact = request.body.contact;
+    const gender = request.body.gender;
     const username = request.body.username;
     const password = request.body.password;
-    const hashedPassword = bcrypt.hashSync(password, 10); 
-    const data = {fullname,address,contact,gender,username,hashedPassword}
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    const data = { fullname, address, contact, gender, username, hashedPassword }
 
-      await userService.register(data);  
-      response.json({
-        status: 'success'        
-      })
-  }catch(error) {
+    await userService.register(data);
+    response.json({
+      status: 'success'
+    })
+  } catch (error) {
     console.log(error)
-    response.json({        
+    response.json({
       status: 'fail',
       success: false,
       message: 'registration failed',
       error: '808'
-          
+
     })
-    
+
   }
 }
-async function authentication(request, response){
-  try{
+async function authentication(request, response) {
+  try {
     const username = request.body.username;
     const password = request.body.password;
-    const hashedPassword = bcrypt.hashSync(password, 10);
-    const data = {username,hashedPassword}
 
-    await userService.authenticate(data)   
-    .then(data => {
-        if (!data) {
-          response.json({
-            status: 'fail',
-            message: 'User not found.'
-          })
-        } else {
-          const password = data.password;
-          const isMatch = bcrypt.compareSync(passwordFromJSON, password);
-          if (isMatch) {
-            // password matched
-            response.json({
-              status: 'success',
-              accessToken: jwt.sign({
-                username: username
-              }, 'secret_key')
-            })
-          } else {
-            response.json({
-              status: 'fail',
-              message: 'user not authenticated'
-            })
-          }
-        }
-        
+    const hashedPassword = await userService.authenticate(username);
+    console.log(hashedPassword.password);
+    if (!hashedPassword) {
+      response.json({
+        status: 'fail',
+        message: 'User not found'
       })
-    
-        }catch(error){
-          response.json({
-              status: 'fail',
-              success: false,
-              message: 'User Authentication failed',
-              error: '404'
-          })
+    } else {
+      const isMatch = bcrypt.compareSync(password, hashedPassword.password);
+      if (isMatch) {
+        // password matched
+        response.json({
+
+          success: true,
+          status: 'success',
+          message: 'authorized',
+          accessToken: jwt.sign({
+            username: username
+          }, 'secret_key')
+        })
+      } else {
+        response.json({
+          status: 'fail',
+          success: false,
+          message: 'unauthorized'
+        })
       }
+    }
+  } catch (error) {
+    response.json({
+      status: 'fail',
+      success: false,
+      message: 'User Authentication failed',
+      error: error.message
+    })
+  }
 }
 
 
 module.exports = {
   register,
   authentication
-  }
+}
