@@ -6,7 +6,7 @@ exports.up = async function(knex, Promise) {
   
         table.increments('id').primary(),
         table.string('fullname'),
-        table.string('username'),
+        table.string('username').unique(),
         table.string('password'),
         table.string('address'),
         table.string('contact'),
