@@ -1,9 +1,11 @@
 
 exports.up = async function(knex, Promise) {
-  return await knex.schema.createTable('admin', table => {
+  await knex.schema.hasTable("admin");
+    return await knex.schema.createTable('admin', table => {
+  
   
     table.increments('id').primary(),
-    table.string('username').unique(),
+    table.string('username'),
     table.string('password')
   })
 };
