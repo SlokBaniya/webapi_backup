@@ -34,8 +34,8 @@ const userController = require('./controller/users');
 
 // express.get('/api/health', sendHealthStatus)
 // express.get('/api/version', getVersion)
-express.post('/api/login', userController.authentication); // 1
-express.post('/api/register', userController.register);
+express.post('/api/user/login', userController.authentication); // 1
+express.post('/api/user/register', userController.register);
 
 // express.get('/api/users', getUsers)
 // express.get('/api/users/:username',getUsername);
