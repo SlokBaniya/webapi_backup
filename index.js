@@ -29,6 +29,7 @@ const dbClient = knex(dbConfig);
 // }
 
 const userController = require('./controller/users');
+const itemController = require('./controller/items');
 
 
 
@@ -36,6 +37,9 @@ const userController = require('./controller/users');
 // express.get('/api/version', getVersion)
 express.post('/api/login', userController.authentication); // 1
 express.post('/api/register', userController.register);
+express.post('/api/item/insert',itemController.add);
+express.post('/api/item/upload',itemController.uploadImage);
+
 
 // express.get('/api/users', getUsers)
 // express.get('/api/users/:username',getUsername);
