@@ -49,7 +49,7 @@ async function authentication(request, response) {
     const password = request.body.password;
 
     const hashedPassword = await userService.authenticate(username);
-    console.log(hashedPassword.password);
+    // console.log(hashedPassword.password);
     if (!hashedPassword) {
       response.json({
         status: 'fail',
@@ -62,7 +62,7 @@ async function authentication(request, response) {
         response.json({
 
           success: true,
-          status: 'success',
+          status: true,
           message: 'authorized',
           accessToken: jwt.sign({
             username: username
@@ -70,7 +70,7 @@ async function authentication(request, response) {
         })
       } else {
         response.json({
-          status: 'fail',
+          status: false,
           success: false,
           message: 'unauthorized'
         })
@@ -78,7 +78,7 @@ async function authentication(request, response) {
     }
   } catch (error) {
     response.json({
-      status: 'fail',
+      status: false,
       success: false,
       message: 'User Authentication failed',
       error: error.message
