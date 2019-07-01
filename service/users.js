@@ -32,24 +32,26 @@ async function register(data) {
       }
     }
   
-//   async function getUsers(request, response) {
-//     try{
-//     const data = await dbClient.table('users').select('username','password')
-//           response.json({
-//           status: 'success',
-//           data: data
+  async function details(username) {
+
+    try{
+    return await dbClient.table('users').select('fullname', 'username', 'password', 'address', 'contact', 'gender').where('username',username);
+      //     response.json({
+      //     status: 'success',
+      //     data: data
        
-//       })
-//     } catch(error){
+      // })
+    } catch(error){
       
-//       response.json({
-//         status: 'failed',
-//         message : error
+    //   response.json({
+    //     status: 'failed',
+    //     message : error
      
-//     })
+    // })
+    return error;
   
-//     }
-//   }
+    }
+  }
   
 //   async function getUsername(request,response){
     
@@ -85,5 +87,6 @@ async function register(data) {
 //     }
     module.exports = {
         register,
-        authenticate
+        authenticate,
+        details
       }

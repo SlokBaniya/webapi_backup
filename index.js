@@ -33,17 +33,16 @@ const itemController = require('./controller/items');
 
 
 
-// express.get('/api/health', sendHealthStatus)
-// express.get('/api/version', getVersion)
-// express.post('/api/login', userController.authentication); // 1
-// express.post('/api/register', userController.register);
+
 express.post('/api/item/insert',itemController.add);
 express.post('/api/item/upload',itemController.uploadImage);
 
 express.post('/api/user/login', userController.authentication); // 1
 express.post('/api/user/register', userController.register);
 
-// express.get('/api/users', getUsers)
+express.get('/api/users/profile', userController.details);
+express.post('/api/users/profile', userController.details);
+
 // express.get('/api/users/:username',getUsername);
 
 express.listen(8000, 'localhost', () => {

@@ -26,10 +26,14 @@ async function register(request, response) {
     const password = request.body.password;
     const hashedPassword = bcrypt.hashSync(password, 10);
     const data = { fullname, address, contact, gender, username, hashedPassword }
+    
 
     await userService.register(data);
     response.json({
-      status: 'success'
+      status: 'success',
+      success:true,
+      message:"Account Created"
+
     })
   } catch (error) {
     console.log(error)
@@ -86,8 +90,23 @@ async function authentication(request, response) {
   }
 }
 
+async function details(request, response) {
+  try {
+    const username = request.body.username;
+    const data = await userService.details(username);
+    response.json(data)
+} catch (error) {
+    console.log(error);
+    res.json({
+        status: 'failed'
+    })
+}
+}
+
+
 
 module.exports = {
   register,
-  authentication
+  authentication,
+  details
 }
