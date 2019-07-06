@@ -14,12 +14,6 @@ async function add(data) {
     const image = data.image;
     const created_at = data.created_at;
     const updated_at = data.updated_at;
-    
-
-  
- 
- 
-
   await dbClient.table('items').insert({itemsname: itemsname, price: price, category: category, desc: desc, image: image, created_at: created_at, updated_at: updated_at})
   }
     catch(error){
@@ -27,9 +21,17 @@ async function add(data) {
 
     }
   }
-  ///////////////////////////
+
+  // async function view(){
+  //   try{
+  //     const data =await dbClient.select('id', 'itemsname', 'category', 'price', 'desc', 'image', 'created_at','updated_at').table('items');
+  //      }catch(error){
+  //     console.log(error)
+  //   }
+  // }
 
 
     module.exports = {
         add
+        // view
       }

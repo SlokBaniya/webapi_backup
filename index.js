@@ -33,17 +33,18 @@ const itemController = require('./controller/items');
 
 
 
-
-express.post('/api/item/insert',itemController.add);
+//items
+express.post('/api/admin/items/add',itemController.add);
 express.post('/api/item/upload',itemController.uploadImage);
 
+//users
 express.post('/api/user/login', userController.authentication); // 1
 express.post('/api/user/register', userController.register);
-
 express.get('/api/users/profile', userController.details);
 express.post('/api/users/profile', userController.details);
-express.get('/api/admin/users', userController.users);
 
+//admin
+express.get('/api/admin/users', userController.users);
 express.get('/api/admin/items', itemController.view);
 
 

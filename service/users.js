@@ -35,7 +35,7 @@ async function register(data) {
   async function details(username) {
 
     try{
-     return await dbClient.table('users').select('fullname', 'username', 'password', 'address', 'contact', 'gender').where('username',username);
+     return await dbClient.table('users').select('fullname', 'username', 'password', 'address', 'contact', 'gender').where("username",username);
      
     } catch(error){
       

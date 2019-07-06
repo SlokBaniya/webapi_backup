@@ -69,7 +69,7 @@ async function add(request, response){
 }
 }
 
-////////////////
+
 async function view(req, res) {
     try {
         const data = await dbClient.select('id', 'itemsname', 'category', 'price', 'desc', 'image', 'created_at','updated_at').table('items')
@@ -81,6 +81,37 @@ async function view(req, res) {
         })
     }
 }
+
+async function update(req, res) {
+    try {
+        const itemsname = request.body.itemsname;
+        const price = request.body.price;
+        const category = request.body.category;
+        const desc = request.body.desc;
+        const image = request.body.image;
+        const created_at = request.body.created_at;
+        const updated_at = request.body.updated_at;
+  
+        const password = bcrypt.hashSync(passwordBody, 10);
+        const data = await dbClient.table('items').where({ id: req.params.id }).update({ itemsname, category, price, desc, image, created_at, updated_at});
+  
+        res.json({
+            status: 'success',
+            success: true,
+            message: 'update success'
+        })
+    } catch (error) {
+        console.log(error)
+        res.json({
+            success: false,
+            status: 'fail',
+            message: 'failed to update'
+        })
+    }
+  }
+  
+
+/////
 async function viewbyCategory(req, res) {
     try {
         const category = req.params.category;
