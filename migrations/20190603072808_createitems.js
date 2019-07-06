@@ -9,7 +9,7 @@ exports.up = async function(knex, Promise) {
         table.string('price'),
         table.string('desc'),
         table.string('image'),
-        table.timestamps()
+        table.timestamps('CURRENT_TIMESTAMP')
       })
   
 };

@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 // connection factory
 const knex = require('knex');
 const dbConfig = require('./../knexfile');
+const dbClient = knex(dbConfig);
 const jwt = require('jsonwebtoken');
 
 // create an express instance
@@ -92,12 +93,74 @@ async function authentication(request, response) {
 
 async function details(request, response) {
   try {
+
     const username = request.body.username;
     const data = await userService.details(username);
     response.json(data)
 } catch (error) {
+  console.log(error);
+  response.json({
+      status: false,
+      message: error
+  })
+}
+}
+////////////////////////
+async function remove(req, res) {
+  try {
+      const data = await dbClient.table('users').where({ id: req.params.id }).delete();
+
+      res.json({
+          status: 'success',
+          success: true,
+          message: 'delete success'
+      })
+  } catch (error) {
+      console.log(error)
+      res.json({
+          success: false,
+          status: 'fail',
+          message: 'failed to delete' 
+      })
+  }
+}
+async function update(req, res) {
+  try {
+      const firstName = req.body.firstName;
+      const lastName = req.body.lastName;
+      const username = req.body.username;
+      const passwordBody = req.body.password;
+
+      const password = bcrypt.hashSync(passwordBody, 10);
+      const data = await dbClient.table('users').where({ id: req.params.id }).update({ firstName, lastName, username, password });
+
+      res.json({
+          status: 'success',
+          success: true,
+          message: 'update success'
+      })
+  } catch (error) {
+      console.log(error)
+      res.json({
+          success: false,
+          status: 'fail',
+          message: 'failed to update'
+      })
+  }
+}
+
+async function users(request, response) {
+  try {
+    const data = await dbClient.select('id', 'fullname', 'address','contact', 'username', 'password', 'gender').table('users');
+        
+    response.json({
+        status: 'ok',
+        data: data,
+        error: 'false'
+    })
+} catch (error) {
     console.log(error);
-    res.json({
+    response.json({
         status: 'failed'
     })
 }
@@ -108,5 +171,6 @@ async function details(request, response) {
 module.exports = {
   register,
   authentication,
-  details
+  details,
+  users
 }

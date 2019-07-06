@@ -1,11 +1,11 @@
 const bcrypt = require('bcrypt');
 const Express = require('express');
 const cors = require('cors');
-const path = require('path');
 const bodyParser = require('body-parser');
 // connection factory
 const knex = require('knex');
 const dbConfig = require('./../knexfile');
+const dbClient = knex(dbConfig);
 const jwt = require('jsonwebtoken');
 
 // create an express instance
@@ -47,10 +47,13 @@ async function add(request, response){
     const category = request.body.category;
     const desc = request.body.desc;
     const image = request.body.image;
-    
-    const data = {itemsname,price,category,desc,image,category};
+    const created_at = request.body.created_at;
+    const updated_at = request.body.updated_at;
 
-      await userService.register(data);  
+    
+    const data = {itemsname,price,desc,image,category,created_at,updated_at};
+
+      await itemsService.add(data);  
       response.json({
         status: true,
         success: true,
@@ -66,9 +69,35 @@ async function add(request, response){
 }
 }
 
+////////////////
+async function view(req, res) {
+    try {
+        const data = await dbClient.select('id', 'itemsname', 'category', 'price', 'desc', 'image', 'created_at','updated_at').table('items')
+        res.json(data)
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: 'failed'
+        })
+    }
+}
+async function viewbyCategory(req, res) {
+    try {
+        const category = req.params.category;
+        const data = await dbClient.select('id', 'title', 'content', 'author', 'category', 'image', 'CURRENT_TIMESTAMP').table('news').where({ category: category })
+        res.json(data)
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: 'failed'
+            
+        })
+    }
+}
 
 
 module.exports = {
   add,
-  uploadImage
+  uploadImage,
+  view
   }

@@ -42,6 +42,11 @@ express.post('/api/user/register', userController.register);
 
 express.get('/api/users/profile', userController.details);
 express.post('/api/users/profile', userController.details);
+express.get('/api/admin/users', userController.users);
+
+express.get('/api/admin/items', itemController.view);
+
+
 
 // express.get('/api/users/:username',getUsername);
 
