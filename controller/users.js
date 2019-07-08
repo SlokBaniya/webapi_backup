@@ -7,13 +7,11 @@ const knex = require('knex');
 const dbConfig = require('./../knexfile');
 const dbClient = knex(dbConfig);
 const jwt = require('jsonwebtoken');
-
 // create an express instance
 const express = new Express();
 express.use(cors());
 express.use(bodyParser.json());
-
-// ** this is is client connection
+// ** this is is service connection
 const userService = require('../service/users');
 
 
@@ -57,7 +55,7 @@ async function authentication(request, response) {
     // console.log(hashedPassword.password);
     if (!hashedPassword) {
       response.json({
-        status: 'fail',
+        status: false,
         message: 'User not found'
       })
     } else {
@@ -90,7 +88,6 @@ async function authentication(request, response) {
     })
   }
 }
-
 async function details(request, response) {
   try {
 
@@ -105,7 +102,7 @@ async function details(request, response) {
   })
 }
 }
-////////////////////////
+
 async function remove(req, res) {
   try {
       const data = await dbClient.table('users').where({ id: req.params.id }).delete();
@@ -124,6 +121,23 @@ async function remove(req, res) {
       })
   }
 }
+async function users(request, response) {
+  try {
+    const data = await dbClient.select('id', 'fullname', 'address','contact', 'username', 'password', 'gender').table('users');
+        
+    response.json({
+        status: 'ok',
+        data: data,
+        error: 'false'
+    })
+} catch (error) {
+    console.log(error);
+    response.json({
+        status: 'failed'
+    })
+}
+}
+////////////////////////
 async function update(req, res) {
   try {
       const firstName = req.body.firstName;
@@ -148,24 +162,6 @@ async function update(req, res) {
       })
   }
 }
-
-async function users(request, response) {
-  try {
-    const data = await dbClient.select('id', 'fullname', 'address','contact', 'username', 'password', 'gender').table('users');
-        
-    response.json({
-        status: 'ok',
-        data: data,
-        error: 'false'
-    })
-} catch (error) {
-    console.log(error);
-    response.json({
-        status: 'failed'
-    })
-}
-}
-
 
 
 module.exports = {
