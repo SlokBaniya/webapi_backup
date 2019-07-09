@@ -88,18 +88,16 @@ async function authentication(request, response) {
     })
   }
 }
-async function details(request, response) {
+async function details(req, res) {
   try {
-
-    const username = request.body.username;
-    const data = await userService.details(username);
-    response.json(data)
+    const username = req.params.username;
+    const data = await dbClient.table('users').select('fullname', 'username', 'address', 'contact').where("username",username);
+    res.json(data);
 } catch (error) {
-  console.log(error);
-  response.json({
-      status: false,
-      message: error
-  })
+    console.log(error);
+    res.json({
+        status: 'failed'
+    })
 }
 }
 

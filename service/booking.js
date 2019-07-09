@@ -11,10 +11,10 @@ async function add(data) {
     const itemId = data.itemId;
     const username = data.username;
     const userid = data.userid;
-    const image = data.image;
+  
     const created_at = data.created_at;
-    const updated_at = data.updated_at;
-  await dbClient.table('booking').insert({itemsname: itemsname, itemId: itemId, username: username, userid: userid, created_at: created_at, updated_at: updated_at})
+
+  await dbClient.table('booking').insert({itemsname: itemsname, itemId: itemId, username: username, userid: userid, created_at: created_at})
   }
     catch(error){
         console.log(error)

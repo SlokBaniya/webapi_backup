@@ -91,6 +91,18 @@ async function viewItem(req, res) {
         })
     }
 }
+async function viewItembyusername(req, res) {
+    try {
+        const username = req.params.username;
+        const data = await dbClient.select().table('items').where({ username: username });
+        res.json(data[0]);
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: 'failed'
+        })
+    }
+}
 async function remove(req, res) {
     try {
         const data = await dbClient.table('items').where({ id: req.params.id }).delete();

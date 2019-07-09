@@ -25,12 +25,9 @@ async function add(request, response){
   const itemId = request.body.itemId;
   const username = request.body.username;
   const userid = request.body.userid;
-  const image = request.body.image;
   const created_at = request.body.created_at;
-  const updated_at = request.body.updated_at;
-
   
-  const data = {itemsname,itemId,username,userid,category,created_at,updated_at};
+  const data = {itemsname,itemId,username,userid,created_at};
 
     await bookingService.add(data);  
     response.json({
