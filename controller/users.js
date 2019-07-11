@@ -92,7 +92,7 @@ async function details(req, res) {
   try {
     const username = req.params.username;
     const data = await dbClient.table('users').select('fullname', 'username', 'address', 'contact').where("username",username);
-    res.json(data);
+    res.json(data[0]);
 } catch (error) {
     console.log(error);
     res.json({
@@ -138,13 +138,13 @@ async function users(request, response) {
 ////////////////////////
 async function update(req, res) {
   try {
-      const firstName = req.body.firstName;
-      const lastName = req.body.lastName;
-      const username = req.body.username;
+      const fullname = req.body.fullname;
+      const address = req.body.address;
+      const contact = req.body.contact     
       const passwordBody = req.body.password;
 
       const password = bcrypt.hashSync(passwordBody, 10);
-      const data = await dbClient.table('users').where({ id: req.params.id }).update({ firstName, lastName, username, password });
+      const data = await dbClient.table('users').where({ username: req.params.username }).update({ fullname, address, contact, password });
 
       res.json({
           status: 'success',
@@ -166,5 +166,6 @@ module.exports = {
   register,
   authentication,
   details,
-  users
+  users,
+  update
 }

@@ -37,6 +37,8 @@ express.get('/api/booking/view/:id', bookingController.viewBooking);
 express.post('/api/user/login', userController.authentication); // 1
 express.post('/api/user/register', userController.register);
 express.get('/api/users/profile/:username', userController.details);
+express.put('/api/users/profile/update/:username', userController.update);
+
 
 // express.post('/api/users/profile/edit', userController.updatedetails);
 
